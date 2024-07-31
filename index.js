@@ -4,37 +4,95 @@ const STRUCTURED_CLONE = 'structuredClone';
 // avoid re-patching the already patched env
 if (!(STRUCTURED_CLONE in Symbol)) {
   const { isArray } = Array;
-  const { entries, fromEntries, prototype: { toString } } = Object;
-  const { [STRUCTURED_CLONE]: clone, postMessage: pm, Worker } = globalThis;
+  const { entries, prototype: { toString: ts } } = Object;
+  const { [STRUCTURED_CLONE]: sc, postMessage, Worker } = globalThis;
 
   const symbol = Symbol.for(STRUCTURED_CLONE);
 
-  const patch = data => {
-    if (symbol in data) return data[symbol]();
-    if (isArray(data)) return data.map(resolve);
-    if (data instanceof Map) return new Map([...data].map(pair));
-    if (data instanceof Set) return new Set([...data].map(resolve));
-    return toString.call(data) === '[object Object]' ?
-      fromEntries([...entries(data)].map(value)) :
-      data
-    ;
+  const clone = (known, data, value) => {
+    known.set(data, value);
+    return value;
   };
 
-  const value = ([key, value]) => [key, resolve(value)];
-  const pair = ([key, value]) => [resolve(key), resolve(value)];
-  const resolve = data => typeof data === 'object' && data ? patch(data) : data;
+  const array = (known, data, value) => {
+    known.set(data, value);
+    for (let i = 0, { length } = data; i < length; i++)
+      value[i] = resolve(known, data[i]);
+    return value;
+  };
+
+  const map = (known, data, value) => {
+    known.set(data, value);
+    for (const [k, v] of data)
+      value.set(resolve(known, k), resolve(known, v));
+    return value;
+  };
+
+  const set = (known, data, value) => {
+    known.set(data, value);
+    for (const v of data)
+      value.add(resolve(known, v));
+    return value;
+  };
+
+  const object = (known, data, value) => {
+    known.set(data, value);
+    for (const [k, v] of entries(data))
+      value[k] = resolve(known, v);
+    return value;
+  };
+
+  function patch(known, data) {
+    // this proposal
+    if (symbol in data) return clone(known, data, data[symbol]());
+    // arrays
+    if (isArray(data)) return array(known, data, []);
+    // maps
+    if (data instanceof Map) return map(known, data, new Map);
+    // sets
+    if (data instanceof Set) return set(known, data, new Set);
+    // object literals
+    if (ts.call(data) === '[object Object]') return object(known, data, {});
+    // avoid all these checks further whatever data is
+    known.set(data, data);
+    return data;
+  }
+
+  const resolve = (known, data) => (
+    typeof data === 'object' && data ?
+      (known.get(data) || patch(known, data)) :
+      data
+  );
 
   // Symbol.structuredClone
   Symbol[STRUCTURED_CLONE] = symbol;
+
   // global structuredClone
-  globalThis[STRUCTURED_CLONE] = (data, ...rest) => clone(resolve(data), ...rest);
+  globalThis[STRUCTURED_CLONE] = (data, ...rest) => sc(
+    resolve(new Map, data),
+    ...rest
+  );
+
   // global postMessage (worker)
-  if (pm) globalThis.postMessage = (data, ...rest) => pm(resolve(data), ...rest);
+  if (postMessage) {
+    globalThis.postMessage = function (data, ...rest) {
+      return postMessage.call(
+        this,
+        resolve(new Map, data),
+        ...rest
+      );
+    };
+  }
+
   // Worker.prototype.postMessage (main)
   if (Worker) {
     const { postMessage } = Worker.prototype;
     Worker.prototype.postMessage = function (data, ...rest) {
-      return postMessage.call(this, resolve(data), ...rest);
+      return postMessage.call(
+        this,
+        resolve(new Map, data),
+        ...rest
+      );
     };
   }
 }
