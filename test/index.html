@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symbol.structuredClone Polyfill</title>
+  <script type="module">
+    import { reference, json, assert } from './helpers.js';
+
+    assert(
+      JSON.stringify(structuredClone(reference)),
+      json,
+      'main: invalid structuredClone',
+    );
+
+    const { promise, resolve } = Promise.withResolvers();
+
+    const w = new Worker('./worker.js', { type: 'module' });
+    w.onmessage = ({ data }) => resolve(data);
+    w.postMessage(reference);
+
+    promise.then(data => {
+      assert(
+        JSON.stringify(data),
+        json,
+        'main: invalid postMessage',
+      );
+      document.body.append('OK');
+    });
+  </script>
+</head>
+</html>

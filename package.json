@@ -1,0 +1,9 @@
+{
+  "name": "symbol-structured-clone",
+  "version": "0.0.0",
+  "main": "index.js",
+  "keywords": ["postMessage", "structuredClone", "serialization"],
+  "author": "Andrea Giammarchi",
+  "license": "MIT",
+  "description": "A Symbol.structuredClone proposal / polyfill"
+}
