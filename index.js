@@ -9,7 +9,7 @@ if (!(STRUCTURED_CLONE in Symbol)) {
 
   const symbol = Symbol.for(STRUCTURED_CLONE);
 
-  const clone = (known, data, value) => {
+  const add = (known, data, value) => {
     known.set(data, value);
     return value;
   };
@@ -44,15 +44,14 @@ if (!(STRUCTURED_CLONE in Symbol)) {
 
   function patch(known, data) {
     // this proposal
-    if (symbol in data) return clone(known, data, data[symbol]());
+    if (symbol in data) return add(known, data, data[symbol]());
     // arrays, maps, sets or object literals
     if (isArray(data)) return array(known, data, []);
     if (data instanceof Map) return map(known, data, new Map);
     if (data instanceof Set) return set(known, data, new Set);
     if (ts.call(data) === '[object Object]') return object(known, data, {});
     // avoid all these checks further whatever data is
-    known.set(data, data);
-    return data;
+    return add(known, data, data);
   }
 
   const resolve = (known, data) => (
