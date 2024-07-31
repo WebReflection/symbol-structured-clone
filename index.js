@@ -45,13 +45,10 @@ if (!(STRUCTURED_CLONE in Symbol)) {
   function patch(known, data) {
     // this proposal
     if (symbol in data) return clone(known, data, data[symbol]());
-    // arrays
+    // arrays, maps, sets or object literals
     if (isArray(data)) return array(known, data, []);
-    // maps
     if (data instanceof Map) return map(known, data, new Map);
-    // sets
     if (data instanceof Set) return set(known, data, new Set);
-    // object literals
     if (ts.call(data) === '[object Object]') return object(known, data, {});
     // avoid all these checks further whatever data is
     known.set(data, data);

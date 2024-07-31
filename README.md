@@ -1,5 +1,8 @@
 # symbol-structured-clone
 
+<sup>**Social Media Photo by [Ricardo Gomez Angel](https://unsplash.com/@rgaleriacom) on [Unsplash](https://unsplash.com/)**</sup>
+
+
 A Symbol.structuredClone proposal / polyfill to hopefully help moving forward [this long standing WHATWG issue](https://github.com/whatwg/html/issues/7428#issuecomment-2259007298).
 
 **[Live Test](https://webreflection.github.io/symbol-structured-clone/test/)**
