@@ -3,7 +3,7 @@
 <sup>**Social Media Photo by [Ricardo Gomez Angel](https://unsplash.com/@rgaleriacom) on [Unsplash](https://unsplash.com/)**</sup>
 
 
-A Symbol.structuredClone proposal / polyfill to hopefully help moving forward [this long standing WHATWG issue](https://github.com/whatwg/html/issues/7428#issuecomment-2259007298), also [discussed at TC39](https://es.discourse.group/t/symbol-clone-to-ease-out-structuredclone-implicit-conversion/2035/7).
+A `Symbol.structuredClone` proposal / polyfill to hopefully help moving forward [this long standing WHATWG issue](https://github.com/whatwg/html/issues/7428#issuecomment-2259007298), also [discussed at TC39](https://es.discourse.group/t/symbol-clone-to-ease-out-structuredclone-implicit-conversion/2035/7).
 
 **[Live Test](https://webreflection.github.io/symbol-structured-clone/test/)**
 
