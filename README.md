@@ -2,6 +2,8 @@
 
 A Symbol.structuredClone proposal / polyfill to hopefully help moving forward [this long standing WHATWG issue](https://github.com/whatwg/html/issues/7428#issuecomment-2259007298).
 
+**[Live Test](https://webreflection.github.io/symbol-structured-clone/test/)**
+
 ```js
 // either globally, or as module, or as worker
 import 'symbol-structured-clone';
