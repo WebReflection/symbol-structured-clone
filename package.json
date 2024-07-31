@@ -1,8 +1,12 @@
 {
   "name": "symbol-structured-clone",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "index.js",
-  "keywords": ["postMessage", "structuredClone", "serialization"],
+  "keywords": [
+    "postMessage",
+    "structuredClone",
+    "serialization"
+  ],
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "description": "A Symbol.structuredClone proposal / polyfill"
