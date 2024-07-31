@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Symbol.structuredClone Polyfill</title>
   <script type="module">
-    import { reference, json, assert } from './helpers.js';
+    import { check, reference, json, assert } from './helpers.js';
 
     assert(
-      JSON.stringify(structuredClone(reference)),
+      JSON.stringify(check(structuredClone(reference))),
       json,
       'main: invalid structuredClone',
     );
@@ -21,7 +21,7 @@
 
     promise.then(data => {
       assert(
-        JSON.stringify(data),
+        JSON.stringify(check(data)),
         json,
         'main: invalid postMessage',
       );

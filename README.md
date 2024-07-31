@@ -24,4 +24,10 @@ postMessage(lm);
 // {"a": 1, "b": 2}
 ```
 
+### A note for Proxies
+
+The `has(key)` trap should check `if (key === Symbol.structuredClone) return true;` in case there is also a `get(ref, key)` trap that eventually provide that callback for cloning purpose.
+
+- - -
+
 That's it 👋

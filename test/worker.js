@@ -1,14 +1,14 @@
-import { reference, json, assert } from './helpers.js';
+import { check, reference, json, assert } from './helpers.js';
 
 assert(
-  JSON.stringify(structuredClone(reference)),
+  JSON.stringify(check(structuredClone(reference))),
   json,
   'worker: invalid structuredClone',
 );
 
 addEventListener('message', ({ data }) => {
   assert(
-    JSON.stringify(data),
+    JSON.stringify(check(data)),
     json,
     'worker: invalid structuredClone',
   );
