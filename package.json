@@ -1,6 +1,6 @@
 {
   "name": "symbol-structured-clone",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "index.js",
   "keywords": [
     "postMessage",
