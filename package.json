@@ -9,5 +9,13 @@
   ],
   "author": "Andrea Giammarchi",
   "license": "MIT",
-  "description": "A Symbol.structuredClone proposal / polyfill"
+  "description": "A Symbol.structuredClone proposal / polyfill",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/symbol-structured-clone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WebReflection/symbol-structured-clone/issues"
+  },
+  "homepage": "https://github.com/WebReflection/symbol-structured-clone#readme"
 }
